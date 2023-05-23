@@ -10,17 +10,20 @@ connection.once('open', async() => {
     await Thought.deleteMany({})
 
     const users =[]
+    let thoughts = []
 
-    for(let i = 0; i < 20; i++) {
+    for(let i = 0; i < 10; i++) {
         let username = getRandomUser()
         let email = username + '@mail.com'
-        // let thoughts = [getRandomThought(), getRandomThought()]
-        
-        users.push({
-            username, email
-        })
+        let thought = getRandomThought()
+        let date = Date.now()
+        // thoughts.push({ thought, date, username })        
+        users.push({ username, email })
     }
+    console.log(thoughts)
+
     console.log(users)
     await User.collection.insertMany(users)
+    // await Thought.collection.insertMany(thoughts)
     process.exit(0)
 })
