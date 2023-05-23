@@ -1,4 +1,5 @@
 const { Schema, model } = require('mongoose')
+const reactionSchema = require('./Reaction')
 
 const thoughtSchema = new Schema(
     {
@@ -17,7 +18,7 @@ const thoughtSchema = new Schema(
 )
 
 // CREATE VIRTUAL FOR reactions.length
-reactionCountSchema
+thoughtSchema
     .virtual('reactionCount')
     .get(function() {
         return this.reactions.length
