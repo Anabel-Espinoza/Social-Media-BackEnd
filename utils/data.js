@@ -74,15 +74,6 @@ const usernames = [
   ];
   
   const thoughts = [
-    'The universe is a vast and mysterious place, full of wonders ready to be discovered.',
-    'Music has the power to evoke emotions and transport us to different times and places.',
-    'The concept of time is both fascinating and perplexing, as it shapes our perception of reality.',
-    'The beauty of nature lies in its patterns and delicate balance.',
-    'Dreams are windows into our subconscious minds, where imagination knows no bounds.',
-    'Laughter is contagious and has the ability to brighten even the darkest of days.',
-    'The explotation of outer space holds the potential for groundbreaking discoveries',
-    'Human creativity knows no limits, as we push the boundaries of what is possible',
-    'The diversity of cultures enriches our world and fosters understanding among people',
     'If animals could talk, which species would be the funniest conversationalists?',
     'Imagine a world where gravity worked in reverse!',
     'What if you could have a superpower that worked only on Tuesdays?',
