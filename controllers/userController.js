@@ -4,11 +4,13 @@ const { ObjectId } = require('mongoose').Types
 module.exports = {
     getAllUsers(req, res) {
         User.find()
+            .populate('thoughts friends')
             .then((users) => res.json(users))
             .catch((err) => res.status(500).json(err))
     },
     getUserById(req, res) {
         User.findOne({ _id: req.params.id })
+            .populate('thoughts friends')
             .select('-_v')
             .then((user) => 
                 !user   
@@ -27,9 +29,9 @@ module.exports = {
             .then((user) =>
                 !user
                     ? res.status(404).json({ message: 'No user found with that id' })
-                    // : Thought.deleteMany({ _id: { $in: {}}}) Delete all thoughts from that user
-                    : res.json(user)
+                    : Thought.deleteMany({ _id: { $in: user.thoughts }}) // Delete all thoughts from that user
             )
+            .then(() => res.json({ message: 'User and their thoughts deleted' }))
             .catch((err) => res.status(500).json(err))
     },
     updateUser(req, res) {
@@ -44,5 +46,31 @@ module.exports = {
                     : res.json(user)
             )
             .catch((err) => res.status(500).json(err))
+    },
+    addFriend(req, res) {
+        User.findOneAndUpdate(
+            { _id: req.params.userId },
+            { $addToSet: { friends: req.params.friendId }},
+            { new: true }
+        )
+        .then((user) =>
+            !user
+                ? res.status(404).json({ message: 'No user found with that id' })
+                : res.json(user)
+        )
+        .catch((err) => res.status(500).json(err))
+    },
+    deleteFriend(req, res) {
+        User.findOneAndUpdate(
+            { _id: req.params.userId },
+            { $pull: { friends: req.params.friendId }},
+            { new: true }
+        )
+        .then((user) =>
+            !user
+                ? res.status(404).json({ message: 'No user found with that id' })
+                : res.json(user)
+        )
+        .catch((err) => res.status(500))
     }
 }
