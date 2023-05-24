@@ -1,5 +1,5 @@
 const { Thought, User } = require('../models')
-const { ObjectId } = require('mongoose').Types
+// const { ObjectId } = require('mongoose').Types
 
 module.exports = {
     getAllThoughts(req, res) {
@@ -40,7 +40,6 @@ module.exports = {
             .then((thought) =>
                 !thought
                     ? res.status(404).json({ message: 'No thought found with that id' })
-                    // : Reactions.deleteMany({ _id: { $in: {}}}) Delete all reactions from that thought
                     : res.json(thought)
             )
             .catch((err) => res.status(500).json(err))
@@ -55,6 +54,32 @@ module.exports = {
                 !thought
                     ? req.status(404).json({ message: 'No thought found with that id' })
                     : res.json(thought)
+            )
+            .catch((err) => res.status(500).json(err))
+    },
+    createRection(req,res) {
+        Thought.findOneAndUpdate(
+            { _id: req.params.thoughtId },
+            { $addToSet: { reactions: req.body }},
+            { runValidators: true, new: true }
+        )
+            .then((thought) => 
+                !thought
+                    ? res.status(404).json({ message: 'No thought found with that id' })
+                    : res.json(thought)
+            )
+            .catch((err) => res.status(500).json(err))
+    },
+    deleteReaction(req, res) {
+        Thought.findOneAndUpdate(
+            { _id: req.params.thoughtId },
+            { $pull: { reactions: { reactionId: req.params.reactionId }}}, // Check this
+            { new: true } 
+        )
+            .then((thought) =>
+                !thought
+                        ? res.status(404).json({ message: 'No thought found with that id' })
+                        : res.json(thought)
             )
             .catch((err) => res.status(500).json(err))
     }

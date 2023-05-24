@@ -1,4 +1,5 @@
 const { Schema, Types } = require('mongoose')
+const { format_date } = require('../utils/format-date')
 
 const reactionSchema = new Schema(
     {
@@ -8,8 +9,7 @@ const reactionSchema = new Schema(
         },
         reactionBody: { type: String, required: true, maxlength: 280 },
         username: { type: String, required: true },
-        createdAt: { type: Date, default: Date.now }
-        // Use a getter method to format the timestamp on query
+        createdAt: { type: Date, default: Date.now, get: timestamp => format_date(timestamp) }
     },
     {
         toJSON: {
